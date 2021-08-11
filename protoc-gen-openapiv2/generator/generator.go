@@ -9,12 +9,13 @@ import (
 
 // Generator is openapi v2 generator
 type Generator struct {
+	UseJSONNamesForFields bool
 }
 
 // Gen generates openapi v2 json content
 func (g *Generator) Gen(req *pluginpb.CodeGeneratorRequest, onlyRPC bool) (*pluginpb.CodeGeneratorResponse, error) {
 	reg := descriptor.NewRegistry()
-	reg.SetUseJSONNamesForFields(true)
+	reg.SetUseJSONNamesForFields(g.UseJSONNamesForFields)
 	reg.SetRecursiveDepth(1024)
 	reg.SetMergeFileName("apidocs")
 	reg.SetGenerateRPCMethods(onlyRPC)
