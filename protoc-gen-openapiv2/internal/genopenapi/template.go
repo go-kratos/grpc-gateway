@@ -182,10 +182,13 @@ func (c *cycleChecker) Branch() *cycleChecker {
 
 // nestedQueryParams converts a field to a list of OpenAPI query parameters recursively.
 // This function is a helper function for queryParams, that keeps track of cyclical message references
-//  through the use of
-//      touched map[string]int
+//
+//	through the use of
+//	    touched map[string]int
+//
 // If a cycle is discovered, an error is returned, as cyclical data structures are dangerous
-//  in query parameters.
+//
+//	in query parameters.
 func nestedQueryParams(message *descriptor.Message, field *descriptor.Field, prefix string, reg *descriptor.Registry, pathParams []descriptor.Parameter, body *descriptor.Body, cycle *cycleChecker) (params []openapiParameterObject, err error) {
 	// make sure the parameter is not already listed as a path parameter
 	for _, pathParam := range pathParams {
@@ -1255,6 +1258,21 @@ func renderServices(services []*descriptor.Service, paths openapiPathsObject, re
 						copy(operationObject.Produces, opts.Produces)
 					}
 
+					if opts.Parameters != nil && len(opts.Parameters.Headers) > 0 {
+						headerParameters := make([]openapiParameterObject, 0, len(opts.Parameters.Headers))
+						for _, header := range opts.Parameters.Headers {
+							headerParameters = append(headerParameters, openapiParameterObject{
+								Name:        header.Name,
+								Description: header.Description,
+								In:          "header",
+								Required:    header.Required,
+								Type:        strings.ToLower(header.Type.String()),
+								Format:      header.Format,
+							})
+						}
+						operationObject.Parameters = append(headerParameters, operationObject.Parameters...)
+					}
+
 					// TODO(ivucica): add remaining fields of operation object
 				}
 
@@ -2001,7 +2019,7 @@ func isProtoPathMatches(paths []int32, outerPaths []int32, typeName string, type
 // For example, if we are trying to locate comments related to a field named
 // `Address` in a message named `Person`, the path will be:
 //
-//	 [4, a, 2, b]
+//	[4, a, 2, b]
 //
 // While `a` gets determined by the order in which the messages appear in
 // the proto file, and `b` is the field index specified in the proto
