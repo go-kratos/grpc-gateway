@@ -431,7 +431,8 @@ func TestMessageToQueryParameters(t *testing.T) {
 }
 
 // TestMessagetoQueryParametersNoRecursive, is a check that cyclical references between messages
-//  are not falsely detected given previous known edge-cases.
+//
+//	are not falsely detected given previous known edge-cases.
 func TestMessageToQueryParametersNoRecursive(t *testing.T) {
 	type test struct {
 		MsgDescs []*descriptorpb.DescriptorProto
@@ -550,8 +551,9 @@ func TestMessageToQueryParametersNoRecursive(t *testing.T) {
 }
 
 // TestMessagetoQueryParametersRecursive, is a check that cyclical references between messages
-//  are handled gracefully. The goal is to insure that attempts to add messages with cyclical
-//  references to query-parameters returns an error message.
+//
+//	are handled gracefully. The goal is to insure that attempts to add messages with cyclical
+//	references to query-parameters returns an error message.
 func TestMessageToQueryParametersRecursive(t *testing.T) {
 	type test struct {
 		MsgDescs []*descriptorpb.DescriptorProto
@@ -990,7 +992,7 @@ func TestApplyTemplateSimple(t *testing.T) {
 	if want, is, name := "", result.BasePath, "BasePath"; !reflect.DeepEqual(is, want) {
 		t.Errorf("applyTemplate(%#v).%s = %s want to be %s", file, name, is, want)
 	}
-	if want, is, name := ([]string)(nil), result.Schemes, "Schemes"; !reflect.DeepEqual(is, want) {
+	if want, is, name := []string{"HTTP", "HTTPS", "WS", "WSS"}, result.Schemes, "Schemes"; !reflect.DeepEqual(is, want) {
 		t.Errorf("applyTemplate(%#v).%s = %s want to be %s", file, name, is, want)
 	}
 	if want, is, name := []string{"application/json"}, result.Consumes, "Consumes"; !reflect.DeepEqual(is, want) {
@@ -2172,7 +2174,7 @@ func TestApplyTemplateRequestWithoutClientStreaming(t *testing.T) {
 	if want, got := "", result.BasePath; !reflect.DeepEqual(got, want) {
 		t.Errorf("applyTemplate(%#v).BasePath = %s want to be %s", file, got, want)
 	}
-	if want, got := ([]string)(nil), result.Schemes; !reflect.DeepEqual(got, want) {
+	if want, got := []string{"HTTP", "HTTPS", "WS", "WSS"}, result.Schemes; !reflect.DeepEqual(got, want) {
 		t.Errorf("applyTemplate(%#v).Schemes = %s want to be %s", file, got, want)
 	}
 	if want, got := []string{"application/json"}, result.Consumes; !reflect.DeepEqual(got, want) {
