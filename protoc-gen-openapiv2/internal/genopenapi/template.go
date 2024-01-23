@@ -1259,7 +1259,7 @@ func renderServices(services []*descriptor.Service, paths openapiPathsObject, re
 					}
 
 					if opts.Parameters != nil && len(opts.Parameters.Headers) > 0 {
-						headerParameters := make([]openapiParameterObject, 0, len(opts.Parameters.Headers))
+						headerParameters := make([]openapiParameterObject, 0, len(opts.Parameters.Headers)+len(operationObject.Parameters))
 						for _, header := range opts.Parameters.Headers {
 							headerParameters = append(headerParameters, openapiParameterObject{
 								Name:        header.Name,
